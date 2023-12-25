@@ -14,7 +14,7 @@ CURR_PAGE_ID = num_pages()
 SPREADSHEET_ID = get_spreadsheet_id()
 
 
-def get_page_id(sheet_name):
+def get_page_id(sheet_name: str) -> str:
     credentials = Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
     )
@@ -30,7 +30,7 @@ def get_page_id(sheet_name):
     return None
 
 
-def delete_sheet(sheet_id):
+def delete_sheet(sheet_id: str) -> None:
     credentials = Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
     )
@@ -46,7 +46,7 @@ def delete_sheet(sheet_id):
         spreadsheetId=SPREADSHEET_ID, body={'requests': requests}).execute()
 
 
-def get_header_formats(sheet_id):
+def get_header_formats(sheet_id: str) -> None:
     return [
         {
             'repeatCell': {
@@ -514,7 +514,7 @@ def get_header_formats(sheet_id):
     ]
 
 
-def get_entry_format(sheet_id, num_games):
+def get_entry_format(sheet_id: str, num_games: int) -> None:
     return [
         {
             'repeatCell': {
@@ -563,7 +563,7 @@ def get_entry_format(sheet_id, num_games):
     ]
 
 
-def format_main_sheet(row_index):
+def format_main_sheet(row_index: int) -> None:
     row_index += 1
     creds = Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES)
@@ -673,7 +673,7 @@ def format_main_sheet(row_index):
         print(f"An error occurred: {e}")
 
 
-def clear_formatting_first_page():
+def clear_formatting_first_page() -> None:
     credentials = Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
     )
@@ -701,7 +701,7 @@ def clear_formatting_first_page():
         print(f"An error occurred: {e}")
 
 
-def summarize_data():
+def summarize_data() -> None:
     creds = Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES)
     service = build('sheets', 'v4', credentials=creds)

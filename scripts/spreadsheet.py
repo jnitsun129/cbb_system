@@ -3,10 +3,9 @@ from googleapiclient.discovery import build
 from scripts.spreadsheet_utils import get_header_formats, get_page_id, get_entry_format, delete_sheet, summarize_data, clear_formatting_first_page, HEADERS, SERVICE_ACCOUNT_FILE, SCOPES, SPREADSHEET_ID
 
 
-def get_data_array(plays):
-    data = plays
+def get_data_array(plays: dict) -> list:
     games = []
-    for _, game in data.items():
+    for _, game in plays.items():
         game_list = [
             int(game['GAME_NUMBER']),
             game['home_team']['Team'],
@@ -23,7 +22,7 @@ def get_data_array(plays):
     return games
 
 
-def format_headers(sheet_id):
+def format_headers(sheet_id: str) -> None:
     credentials = Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
     )
@@ -35,7 +34,7 @@ def format_headers(sheet_id):
     ).execute()
 
 
-def add_entries(date, sheet_id, plays):
+def add_entries(date: str, sheet_id: str, plays: dict) -> int:
     credentials = Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
     )
@@ -53,7 +52,7 @@ def add_entries(date, sheet_id, plays):
                                                          range=range,
                                                          valueInputOption='RAW',
                                                          body=body)
-        response = request.execute()
+        request.execute()
         format_requests = get_entry_format(sheet_id, len(values))
         service.spreadsheets().batchUpdate(
             spreadsheetId=SPREADSHEET_ID,
@@ -64,7 +63,7 @@ def add_entries(date, sheet_id, plays):
     return None
 
 
-def create_page(sheet_name):
+def create_page(sheet_name: str) -> None:
     # Load credentials
     creds = Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES)
@@ -81,15 +80,14 @@ def create_page(sheet_name):
         }]
     }
     try:
-        response = service.spreadsheets().batchUpdate(
+        service.spreadsheets().batchUpdate(
             spreadsheetId=SPREADSHEET_ID, body=body).execute()
-        return response
     except Exception as e:
         print(f"An error occurred: {e}")
         return None
 
 
-def add_formulas(page_id, num_rows):
+def add_formulas(page_id: str, num_rows: int) -> None:
     credentials = Credentials.from_service_account_file(
         SERVICE_ACCOUNT_FILE, scopes=SCOPES
     )
@@ -177,7 +175,7 @@ def add_formulas(page_id, num_rows):
         pass
 
 
-def populate_spreadsheet(date, plays):
+def populate_spreadsheet(date: str, plays: dict) -> None:
     if get_page_id(date) is not None:
         delete_sheet(get_page_id(date))
     create_page(date)

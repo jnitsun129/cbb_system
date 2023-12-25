@@ -1,4 +1,5 @@
 from datetime import datetime
+import pandas as pd
 from scripts.teams_dict import TEAMS_DICT
 from scripts.utils import get_dates, print_plays
 from scripts.kenpom import fetch_kenpom, Driver
@@ -7,7 +8,7 @@ from scripts.spreadsheet import populate_spreadsheet
 from scripts.dynamo import upload_plays, get_plays
 
 
-def calculate_system(games, kenpom, date, book_name='fanduel'):
+def calculate_system(games: list, kenpom: pd.DataFrame, date: str, book_name='fanduel') -> dict:
     system_games = {}
     plays = None
     last_game = 0
@@ -99,7 +100,7 @@ def calculate_system(games, kenpom, date, book_name='fanduel'):
     return system_games
 
 
-def run(date: datetime):
+def run(date: datetime) -> None:
     date_str = date.strftime("%Y-%m-%d")
     driver = Driver()
     kenpom = fetch_kenpom(driver)

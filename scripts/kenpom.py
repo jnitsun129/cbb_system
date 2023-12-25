@@ -9,7 +9,7 @@ class Driver:
         self.driver = webdriver.Chrome(
             get_chromedriver_path())
 
-    def get(self, url):
+    def get(self, url: str):
         self.driver.get(url)
         self.driver.implicitly_wait(10)
         return self.driver.page_source
@@ -18,7 +18,7 @@ class Driver:
         self.driver.quit()
 
 
-def fetch_kenpom(driver: Driver):
+def fetch_kenpom(driver: Driver) -> pd.DataFrame:
     url = 'https://kenpom.com'
     try:
         html_content = driver.get(url)

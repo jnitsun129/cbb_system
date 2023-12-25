@@ -4,7 +4,7 @@ from scripts.utils import get_aws_credentials
 from decimal import Decimal
 
 
-def upload_plays(data, date):
+def upload_plays(data: dict, date: str) -> None:
     creds = get_aws_credentials()
     stringified_data = {}
     for num, game in data.items():
@@ -35,7 +35,7 @@ def upload_plays(data, date):
         print(f"{error}")
 
 
-def get_plays(date):
+def get_plays(date: str) -> list:
     creds = get_aws_credentials()
     dynamodb = boto3.resource(
         'dynamodb',

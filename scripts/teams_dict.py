@@ -348,7 +348,7 @@ TEAMS_DICT = {
 }
 
 
-def reprint_dict():
+def reprint_dict() -> None:
     print("TEAMS_DICT = {")
     for key, value in TEAMS_DICT.items():
         print(f'\t"{key}":"{value}",')
